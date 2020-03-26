@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'createNew.dart';
+import 'pages/quoteList.dart';
 
 
-void main() => runApp(MyApp());
+void main() => runApp(MaterialApp(
+  initialRoute: '/',
+  routes: {
+    '/': (context) => QuoteList(),
+   '/add': (context) => MyApp(),
+//    '/location': (context) => ChooseLocation(),
+  },
+));
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
