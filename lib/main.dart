@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'createNew.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -10,56 +11,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.teal,
+        brightness: Brightness.light,
+        primaryColor: Colors.black,
       ),
-      home: MyHomePage(title: 'Quotes'),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+      ),
+      home: Create(),
     );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
-  final databaseReference = Firestore.instance;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-
-        child: Column(
-
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            FlatButton(
-              child: Text('Create Record'),
-              onPressed: () {
-                createRecord();
-              },
-            ),
-          ],
-        ),
-      ),
-      // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-
-  void createRecord() async {
-    DocumentReference ref = await databaseReference.collection("quotes")
-        .add({
-      'author': 'kalna',
-      'quote': 'yo yo'
-    });
   }
 }
