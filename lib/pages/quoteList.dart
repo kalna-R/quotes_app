@@ -113,12 +113,17 @@ class _QuoteCardState extends State<QuoteCard> {
                                 FlatButton.icon(
                                     onPressed: () {},
                                     icon: Icon(Icons.pageview),
-                                    label: Text('view quote')
+                                    label: Text('view')
+                                ),
+                                FlatButton.icon(
+                                    onPressed: () {},
+                                    icon: Icon(Icons.edit),
+                                    label: Text('Edit')
                                 ),
                                 FlatButton.icon(
                                     onPressed: (){},
                                     icon: Icon(Icons.delete),
-                                    label: Text('delete quote')
+                                    label: Text('delete')
                                 ),
                               ],
                             ),
