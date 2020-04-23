@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'quote.dart';
+import '../Model/quote.dart';
 
 //Create a Form widget
 class Create extends StatefulWidget {
