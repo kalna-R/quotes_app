@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Quote {
@@ -100,6 +101,14 @@ class _QuoteCardState extends State<QuoteCard> {
                               ),
                             ),
                             Text(
+                              "Author - "+snapshot.data[index].data["author"],
+                              style: TextStyle(
+                                fontSize: 17,
+                                color: Colors.grey[800],
+                              ),
+                            ),
+                            SizedBox(height: 6,),
+                            Text(
                               snapshot.data[index].data["quote"],
                               style: TextStyle(
                                 fontSize: 17,
@@ -111,7 +120,9 @@ class _QuoteCardState extends State<QuoteCard> {
                             Row(
                               children: <Widget>[
                                 FlatButton.icon(
-                                    onPressed: () {},
+                                    onPressed: () {
+
+                                    },
                                     icon: Icon(Icons.pageview),
                                     label: Text('view')
                                 ),
@@ -121,7 +132,40 @@ class _QuoteCardState extends State<QuoteCard> {
                                     label: Text('Edit')
                                 ),
                                 FlatButton.icon(
-                                    onPressed: (){},
+                                    onPressed: (){
+                                      Widget cancelButton = FlatButton(
+                                        child: Text("Cancel"),
+                                        onPressed:  () {
+                                          Navigator.of(context).pop(false);
+                                        },
+                                      );
+                                      Widget continueButton = FlatButton(
+                                        child: Text("Continue"),
+                                        onPressed:  () {
+                                          Firestore.instance.collection("quotes").document(snapshot.data[index].documentID.toString()).delete();
+                                          Navigator.of(context).pop(false);
+                                          setState(() {});
+                                        },
+                                      );
+
+                                      // set up the AlertDialog
+                                      AlertDialog alert = AlertDialog(
+                                        title: Text("Delete"),
+                                        content: Text("Are you sure you want to permenently delete this quote"),
+                                        actions: [
+                                          cancelButton,
+                                          continueButton,
+                                        ],
+                                      );
+
+                                      // show the dialog
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return alert;
+                                        },
+                                      );
+                                      },
                                     icon: Icon(Icons.delete),
                                     label: Text('delete')
                                 ),
