@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:quotes_app/pages/categoryList.dart';
 import '../Model/quote.dart';
-//import 'quoteList.dart';
 
 //Create a Form widget
 class Create extends StatefulWidget {
@@ -28,7 +27,8 @@ class _CreateState extends State<Create> {
     return Scaffold(
       //avoid bottom overflow
       resizeToAvoidBottomPadding: false,
-      //snackbar
+
+      //Snack bar
       key: _key,
 
       appBar: AppBar(
@@ -76,31 +76,36 @@ class _CreateState extends State<Create> {
               ),
 
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
+                padding: const EdgeInsets.symmetric(vertical: 14.0),
               ),
 
               //https://api.flutter.dev/flutter/material/DropdownButton-class.html
-              Container(
-                width: 500.0,
-                child: DropdownButton<String>(
-                  hint: Text('Select Category'),
-                  value: _dropDownValue,
-                  icon: const Icon(Icons.arrow_drop_down, size: 24),
-                  items: <String>['Motivational', 'Happy', 'Sad', 'Four']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      _dropDownValue = value;
-                    });
-                  },
-//                  onSaved: (val) => setState(() => _model.category = val),
+              DropdownButtonFormField<String>(
+                decoration: const InputDecoration(
+                  icon: const Icon(Icons.category),
                 ),
+                hint: Text('Select Category'),
+                value: _dropDownValue,
+                icon: const Icon(Icons.arrow_drop_down, size: 24),
+                items: <String>['Motivational', 'Positive', 'Friendship', 'Success']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _dropDownValue = value;
+                  });
+                },
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return 'Please select a category';
+                  }
+                  return null;
+                },
+                onSaved: (val) => setState(() => _model.category = val),
               ),
 
               Padding(
