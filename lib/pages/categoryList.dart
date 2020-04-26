@@ -1,5 +1,3 @@
-//import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'quoteList.dart';
@@ -26,41 +24,37 @@ class _CategoryState extends State<Category> {
         centerTitle: true,
         backgroundColor: Colors.black,
       ),
-
       //Slide bar - https://www.youtube.com/watch?v=WqpV_w6lioA
       drawer: Drawer(
-          child: ListView(
-            children: <Widget>[
-              SizedBox(height: 30,),
-              new ListTile(
-                title: new Text("Quote App",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.blue),),
-              ),
-              new ListTile(
-                title: new Text("Home",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
-                trailing: new Icon(Icons.home),
-              ),
-              new Divider(),
-              new ListTile(
-                  title: new Text("Add new",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
-                  trailing: new Icon(Icons.add),
-                  onTap: () async {
-                    Navigator.pushNamed(context, '/add');
-                  }
-              ),
-              new Divider(),
-              new ListTile(
-                  title: new Text("Quote List",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
-                  trailing: new Icon(Icons.list),
-                  onTap: () async {
-                    Navigator.pushNamed(context, '/quotelist');
-                  }
-              )
-            ],
-          )
+        child: ListView(
+          children: <Widget>[
+            SizedBox(height: 30,),
+            new ListTile(
+              title: new Text("Quote App",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.blue),),
+            ),
+            new ListTile(
+              title: new Text("Home",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+              trailing: new Icon(Icons.home),
+            ),
+            new Divider(),
+            new ListTile(
+              title: new Text("Add new",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+              trailing: new Icon(Icons.add),
+              onTap: () async {
+                Navigator.pushNamed(context, '/add');
+              }
+            ),
+            new Divider(),
+            new ListTile(
+              title: new Text("Quote List",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+              trailing: new Icon(Icons.list),
+                onTap: () async {
+                  Navigator.pushNamed(context, '/quotelist');
+                }
+            )
+          ],
+        )
       ),
-
-
-
       body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -70,14 +64,13 @@ class _CategoryState extends State<Category> {
                 child: new StreamBuilder(
                     stream: databaseReference.collection('quotes').snapshots(),
                     builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
+                      if (!snapshot.hasData)
                         return const Center(
                             child: Text(
-                              "Loading",
-                              style: TextStyle(fontSize: 25.0, color: Colors
-                                  .grey),
-                            ));
-                      }
+                          "Loading....",
+                          style: TextStyle(fontSize: 25.0, color: Colors.grey),
+                        ));
+
                       return new ListView.builder(
                         scrollDirection: Axis.vertical,
                         itemCount: snapshot.data.documents.length,
@@ -100,8 +93,7 @@ class _CategoryState extends State<Category> {
                                     Column(children: <Widget>[
                                       Container(
                                         width:
-                                            MediaQuery.of(context).size.width -
-                                                100,
+                                            MediaQuery.of(context).size.width - 100,
                                         child: Text(
                                           ds.data['category'],
                                           style: TextStyle(
@@ -109,7 +101,8 @@ class _CategoryState extends State<Category> {
                                               color: Colors.black,
                                               height: 1.3,
                                               letterSpacing: 1,
-                                              wordSpacing: 1.5),
+                                              wordSpacing: 1.5
+                                          ),
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 3,
                                         ),
@@ -130,11 +123,12 @@ class _CategoryState extends State<Category> {
   }
 
   void getData() async {
-    databaseReference.collection("quotes").getDocuments()
+    databaseReference
+        .collection("quotes")
+        .getDocuments()
         .then((QuerySnapshot snapshot) {
-          snapshot.documents.forEach((f) => setState(() {}));
+      snapshot.documents.forEach((f) => setState(() {}));
     });
-
     _status = true;
   }
 }
