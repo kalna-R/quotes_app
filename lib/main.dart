@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'pages/createNew.dart';
 import 'pages/quoteList.dart';
+import 'package:quotes_app/pages/splashScreen.dart';
 
 
 void main() => runApp(MaterialApp(
   initialRoute: '/',
   routes: {
-    '/': (context) => QuoteList(),
+    '/': (context) => SplashScreen(),
+    '/quotelist': (context) => QuoteList(),
    '/add': (context) => MyApp(),
 //    '/location': (context) => ChooseLocation(),
   },

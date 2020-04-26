@@ -131,6 +131,7 @@ class _QuoteCardState extends State<QuoteCard> {
                                     icon: Icon(Icons.edit),
                                     label: Text('Edit')
                                 ),
+                                //Allert is copied from https://stackoverflow.com/questions/53844052/how-to-make-an-alertdialog-in-flutter
                                 FlatButton.icon(
                                     onPressed: (){
                                       Widget cancelButton = FlatButton(
