@@ -1,3 +1,5 @@
+//import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'quoteList.dart';
@@ -23,6 +25,37 @@ class _CategoryState extends State<Category> {
         centerTitle: true,
         backgroundColor: Colors.black,
       ),
+      //Slide bar - https://www.youtube.com/watch?v=WqpV_w6lioA
+      drawer: Drawer(
+        child: ListView(
+          children: <Widget>[
+            SizedBox(height: 30,),
+            new ListTile(
+              title: new Text("Quote App",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.blue),),
+            ),
+            new ListTile(
+              title: new Text("Home",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+              trailing: new Icon(Icons.home),
+            ),
+            new Divider(),
+            new ListTile(
+              title: new Text("Add new",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+              trailing: new Icon(Icons.add),
+              onTap: () async {
+                Navigator.pushNamed(context, '/add');
+              }
+            ),
+            new Divider(),
+            new ListTile(
+              title: new Text("Quote List",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+              trailing: new Icon(Icons.list),
+                onTap: () async {
+                  Navigator.pushNamed(context, '/quotelist');
+                }
+            )
+          ],
+        )
+      ),
       body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -45,6 +78,7 @@ class _CategoryState extends State<Category> {
                         itemBuilder: (context, index) {
                           DocumentSnapshot ds = snapshot.data.documents[index];
                           return InkWell(
+ //                           onTap: () async {Navigator.pushNamed(context, '/quotelist');},
                             onTap: () async {
                               Navigator.push(
                                   context,

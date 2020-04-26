@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
     Timer(Duration(seconds: 3), (){
       //Navigator.push(context, MaterialPageRoute(builder: (context) => QuoteList()));
-      Navigator.pushReplacementNamed(context, "/quotelist");
+      Navigator.pushReplacementNamed(context, "/category");
     });
   }
 
