@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:quotes_app/pages/updateQuote.dart';
 
 class Quote {
 
@@ -10,17 +11,17 @@ class Quote {
   Quote({this.text, this.author});
 }
 
-
-
 class QuoteList extends StatefulWidget {
+
+//  final String data;
+//  QuoteList({this.data});
+
   @override
   _QuoteListState createState() => _QuoteListState();
+
 }
 
 class _QuoteListState extends State<QuoteList> {
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +58,7 @@ class QuoteCard extends StatefulWidget {
 }
 
 class _QuoteCardState extends State<QuoteCard> {
+
 
   Future getQuotes() async {
     var firestore = Firestore.instance;
@@ -127,7 +129,10 @@ class _QuoteCardState extends State<QuoteCard> {
                                     label: Text('View')
                                 ),
                                 FlatButton.icon(
-                                    onPressed: () {},
+                                  onPressed:  () {
+                                    String id = Firestore.instance.collection("quotes").document(snapshot.data[index].documentID).documentID;
+                                    Navigator.push( context, MaterialPageRoute( builder: (context) => Update(data:id,)));
+                                  },
                                     icon: Icon(Icons.edit),
                                     label: Text('Edit')
                                 ),
@@ -181,6 +186,8 @@ class _QuoteCardState extends State<QuoteCard> {
           }
       ),
     );
+
+
 
   }
 }

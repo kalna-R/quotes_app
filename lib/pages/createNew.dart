@@ -31,9 +31,13 @@ class _CreateState extends State<Create> {
       //Snack bar
       key: _key,
 
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
         title: Text('Quotes'),
+        centerTitle: true,
+        backgroundColor: Colors.black,
       ),
+
       body: Form(
         key: _formKey,
         child: Padding(
