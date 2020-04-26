@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:quotes_app/pages/categoryList.dart';
 import '../Model/quote.dart';
 
 //Create a Form widget
 class Create extends StatefulWidget {
-
   @override
   _CreateState createState() => _CreateState();
-
 }
 
 //Data related to the form
 class _CreateState extends State<Create> {
-
 // Create a global key that uniquely identifies the Form widget and allows validation of the form.
   final _formKey = GlobalKey<FormState>();
-//  String dropDownValue = 'One';
+
+  //snackbar
+  final _key = GlobalKey<ScaffoldState>();
+
+  String _dropDownValue;
   final databaseReference = Firestore.instance;
 
   final _model = Quote();
@@ -23,40 +25,35 @@ class _CreateState extends State<Create> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       //avoid bottom overflow
-        resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomPadding: false,
 
-        appBar: AppBar(
-          title: Text('New Quotes'),
+      //Snack bar
+      key: _key,
+
+      appBar: AppBar(
+        title: Text('Quotes'),
       ),
       body: Form(
         key: _formKey,
-
         child: Padding(
           padding: const EdgeInsets.all(50.0),
-
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-
             children: <Widget>[
-
               TextFormField(
                 decoration: const InputDecoration(
                   icon: const Icon(Icons.format_quote),
                   hintText: 'Enter quote',
                   labelText: 'Quote',
                 ),
-
-                validator: (value){
-                  if(value.isEmpty){
+                validator: (value) {
+                  if (value.isEmpty) {
                     return 'Please enter quote';
                   }
                   return null;
                 },
-
-                onSaved: (val)=>
-                    setState(()=> _model.quoteText = val),
+                onSaved: (val) => setState(() => _model.quoteText = val),
               ),
 
               Padding(
@@ -69,65 +66,90 @@ class _CreateState extends State<Create> {
                   hintText: 'Enter author',
                   labelText: 'Author',
                 ),
-
-                validator: (value){
-                  if(value.isEmpty){
-                    return 'Please enter author';
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter author' 's name';
                   }
                   return null;
                 },
-
-                onSaved: (val)=>
-                    setState(()=> _model.author = val),
-
+                onSaved: (val) => setState(() => _model.author = val),
               ),
 
-//            DropdownButton<String>(
-//
-//              value: dropDownValue.isNotEmpty ? dropDownValue : null,
-//              icon: const Icon(Icons.category),
-//
-//              hint: Text('Please choose a category'),
-//
-//              onChanged: (String newValue) {
-//                setState(() {
-//                  dropDownValue = newValue;
-//                });
-//              },
-//              items: <String>['One', 'Two', 'Three', 'Four']
-//                  .map<DropdownMenuItem<String>>((String value) {
-//                return DropdownMenuItem<String>(
-//                  value: value,
-//                  child: Text(value),
-//                );
-//              })
-//                  .toList(),
-//            ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 14.0),
+              ),
+
+              //https://api.flutter.dev/flutter/material/DropdownButton-class.html
+              DropdownButtonFormField<String>(
+                decoration: const InputDecoration(
+                  icon: const Icon(Icons.category),
+                ),
+                hint: Text('Select Category'),
+                value: _dropDownValue,
+                icon: const Icon(Icons.arrow_drop_down, size: 24),
+                items: <String>['Motivational', 'Positive', 'Friendship', 'Success']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _dropDownValue = value;
+                  });
+                },
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return 'Please select a category';
+                  }
+                  return null;
+                },
+                onSaved: (val) => setState(() => _model.category = val),
+              ),
 
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 30.0),
               ),
 
-              RaisedButton(
-                    color: Colors.black,
-                    textColor: Colors.white,
-                    disabledColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(22.0)
-                    ),
-                    disabledTextColor: Colors.black,
-                    child: const Text('Submit', style: TextStyle(
-                        color: Colors.white,
-                      )
-                    ),
+              FlatButton(
+                color: Colors.black,
+                textColor: Colors.white,
+                disabledColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(22.0)),
+                disabledTextColor: Colors.black,
+                child: const Text('Submit',
+                    style: TextStyle(
+                      color: Colors.white,
+                    )),
+                onPressed: () {
+                  if (_formKey.currentState.validate()) {
+                    _formKey.currentState.save();
 
-                    onPressed: (){
-                      if(_formKey.currentState.validate()){
-                        _formKey.currentState.save();
-                      createRecord();
-                      }
-                    },
-                  )
+                    // dismiss keyboard
+                    FocusScope.of(context).requestFocus(new FocusNode());
+                    _formKey.currentState.reset();
+                    createRecord();
+
+                    _key.currentState.showSnackBar(new SnackBar(
+                      content: Text("Quote Added Successfully"),
+                      duration: Duration(seconds: 10),
+                      action: SnackBarAction(
+                        label: 'Home',
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Category(),
+                            ),
+                          );
+                        },
+                      ),
+                    ));
+                  }
+                },
+              )
 //            ),
             ],
           ),
@@ -137,11 +159,8 @@ class _CreateState extends State<Create> {
   }
 
   void createRecord() async {
-    DocumentReference ref = await databaseReference.collection("quotes")
-        .add({
-      'quote': _model.quoteText,
-      'author': _model.author
-    });
+    DocumentReference ref = await databaseReference
+        .collection("quotes")
+        .add({'quote': _model.quoteText, 'author': _model.author, 'category': _model.category});
   }
-
 }
