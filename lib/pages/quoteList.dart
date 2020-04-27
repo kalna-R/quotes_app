@@ -13,6 +13,7 @@ class Quote {
 
 class QuoteList extends StatefulWidget {
 
+//  filter category
 //  final String data;
 //  QuoteList({this.data});
 
@@ -64,6 +65,9 @@ class _QuoteCardState extends State<QuoteCard> {
     var firestore = Firestore.instance;
 
     QuerySnapshot qn = await firestore.collection("quotes").getDocuments();
+
+    //filter category
+    //    QuerySnapshot qn = await firestore.collection("quotes").where('category', isEqualTo: deviceName).snapshots();
 
     return qn.documents;
   }

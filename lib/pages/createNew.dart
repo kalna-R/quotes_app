@@ -9,6 +9,7 @@ class Create extends StatefulWidget {
   _CreateState createState() => _CreateState();
 }
 
+//Form reference => https://medium.com/flutter-community/realistic-forms-in-flutter-part-1-327929dfd6fd
 //Data related to the form
 class _CreateState extends State<Create> {
 // Create a global key that uniquely identifies the Form widget and allows validation of the form.
@@ -91,7 +92,14 @@ class _CreateState extends State<Create> {
                 hint: Text('Select Category'),
                 value: _dropDownValue,
                 icon: const Icon(Icons.arrow_drop_down, size: 24),
-                items: <String>['Motivational', 'Positive', 'Friendship', 'Success']
+                items: <String>[
+                  'Motivational',
+                  'Positive',
+                  'Friendship',
+                  'Philosophy',
+                  'Life',
+                  'Music',
+                  'Other']
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -128,6 +136,7 @@ class _CreateState extends State<Create> {
                       color: Colors.white,
                     )),
                 onPressed: () {
+
                   if (_formKey.currentState.validate()) {
                     _formKey.currentState.save();
 
