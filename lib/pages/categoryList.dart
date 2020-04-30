@@ -78,10 +78,12 @@ class _CategoryState extends State<Category> {
                           DocumentSnapshot ds = snapshot.data.documents[index];
                           return InkWell(
                             onTap: () async {
+                              String id = ds.data['author'];
+//                              print(id);
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => QuoteList()));
+                                      builder: (context) => QuoteList(authorId:id)));
                             },
                             child: Card(
                               margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
@@ -90,12 +92,19 @@ class _CategoryState extends State<Category> {
                                 padding: const EdgeInsets.all(30.0),
                                 child: Row(
                                   children: <Widget>[
-                                    Column(children: <Widget>[
+                                    Row(children: <Widget>[
+                                      Container(
+                                        width: 50.0,
+                                        height: 50.0,
+                                        child: Tab(
+                                          icon: const Icon(Icons.person),
+                                        ),
+                                      ),
                                       Container(
                                         width:
-                                            MediaQuery.of(context).size.width - 100,
+                                            MediaQuery.of(context).size.width - 200,
                                         child: Text(
-                                          ds.data['category'],
+                                          ds.data['author'],
                                           style: TextStyle(
                                               fontSize: 16,
                                               color: Colors.black,
